@@ -1,6 +1,5 @@
 import pytest
-from app.features.quizzify.core import executor
-# from app.api.error_utilities import SyllabusGeneratorError
+from app.features.ai_resistant_assignment_generator.core import executor
 from app.services.schemas import AIResistantArgs
 
 def test_executor_pdf_url_valid():
@@ -19,7 +18,7 @@ def test_executor_pdf_url_valid():
     assert len(assignment) == 3
 
 
-def test_executor_pdf_url_valid():
+def test_executor_pdf_url_invalid():
 
     ai_resistant_args = AIResistantArgs(
         topic = "Introduction to Data Science",

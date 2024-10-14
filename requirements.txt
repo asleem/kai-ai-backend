@@ -10,9 +10,6 @@ google-cloud-secret-manager
 google-cloud-logging
 google-auth
 google-cloud-storage
-google-cloud-speech
-speechrecognition
-
 firebase-admin
 chroma
 pypdf
@@ -34,8 +31,8 @@ pytest
 PyPDF2
 python-dotenv
 psutil
+
 pydub
-
-pylatex
-protobuf>=3.20.0,<3.21.0
-
+ffmpeg-python
+speechrecognition
+google-cloud-speech

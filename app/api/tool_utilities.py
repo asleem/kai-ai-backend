@@ -7,6 +7,7 @@ from typing import Dict, Any, List
 from fastapi import HTTPException
 from pydantic import ValidationError
 
+
 logger = setup_logger(__name__)
 
 def load_config():
@@ -18,7 +19,7 @@ tools_config = load_config()
 
 def get_executor_by_name(module_path):
     try:
-        module = __import__(module_path, fromlist=['executor'])
+        module = __import__('app.'+module_path, fromlist=['executor'])
         return getattr(module, 'executor')
     except Exception as e:
         logger.error(f"Failed to import executor from {module_path}: {str(e)}")
@@ -96,6 +97,7 @@ def validate_input_type(input_name: str, input_value: Any, expected_type: str):
     elif expected_type == 'file':
         validate_file_input(input_name, input_value)
 
+
 def validate_inputs(request_data: Dict[str, Any], validate_data: List[Dict[str, str]]) -> bool:
     validate_inputs = {input_item['name']: input_item['type'] for input_item in validate_data}
     
@@ -109,13 +111,14 @@ def validate_inputs(request_data: Dict[str, Any], validate_data: List[Dict[str, 
 
         expected_type = validate_inputs[input_name]
         validate_input_type(input_name, input_value, expected_type)
-
+        
     return True
 
 def convert_files_to_tool_files(inputs: Dict[str, Any]) -> Dict[str, Any]:
     if 'files' in inputs:
         inputs['files'] = [ToolFile(**file_object) for file_object in inputs['files']]
     return inputs
+
 
 def finalize_inputs(input_data, validate_data: List[Dict[str, str]]) -> Dict[str, Any]:
     inputs = prepare_input_data(input_data)
@@ -129,7 +132,7 @@ def execute_tool(tool_id, request_inputs_dict):
         
         if not tool_config:
             raise HTTPException(status_code=404, detail="Tool executable not found")
-        
+
         execute_function = get_executor_by_name(tool_config['path'])
         request_inputs_dict['verbose'] = True
         
